@@ -1,5 +1,9 @@
 version: '3.7'
 
+
+volumes:
+    folkprog_mysql_data: ~
+
 services:
     folkprog:
         image: harentius/blog-bundle-base
@@ -19,12 +23,9 @@ services:
     mysql:
         image: mysql:5.7
         volumes:
-            - db-data:/var/lib/mysql
+            - folkprog_mysql_data:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: 1111
             MYSQL_PASSWORD: 1111
             MYSQL_DATABASE: folkprog
         command: mysqld --sql-mode=''
-
-volumes:
-    db-data: ~
