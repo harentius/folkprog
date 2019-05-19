@@ -3,6 +3,7 @@
 set -e; set -u
 . "$(dirname $0)/common"
 
+env=${1:-dev}
 write_title "Setting up full permissions on var dir"
 find "$app_dir/cache" -type d -exec chmod 777 {} +
 find "$app_dir/logs" -type d -exec chmod 777 {} +
@@ -12,7 +13,7 @@ write_title "Updating database schema"
 exec_console doctrine:schema:update --force "$@"
 
 write_title "Loading fixtures"
-exec_console hautelook_alice:doctrine:fixtures:load --no-interaction --env=test
+exec_console hautelook_alice:doctrine:fixtures:load --no-interaction --env="$env"
 
 write_title "Install assets"
 exec_console assets:install --symlink

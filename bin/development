@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e; set -u
+. "$(dirname $0)/common"
+
+command=${1:-}
+
+docker_compose() {
+    docker-compose -f support/dev/docker-compose.yml --project-directory=. "$@"
+}
+
+case "$command" in
+    "run")
+        docker_compose up --build
+    ;;
+    "stop")
+        docker_compose down --rmi=local
+    ;;
+    "build")
+        docker_compose exec -T -w /app folkprog bin/install
+    ;;
+    *)
+        echo "Unknown operand. Known are: run|stop|build"
+    ;;
+esac
